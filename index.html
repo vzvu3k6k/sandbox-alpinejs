@@ -4,6 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <title>Todo Extra</title>
+  <style>
+    .task.completed {
+      text-decoration: line-through;
+    }
+  </style>
 </head>
 
 <body>
@@ -17,7 +22,10 @@
 
     <ul>
       <template x-for="task in tasks" :key="task">
-        <li class="task" x-text="task.label" />
+        <li class="task" :class="{ completed: task.completed }">
+          <input type="checkbox" x-on:click="tasks = updateTask({ id: task.id, completed: !task.completed }, tasks)">
+          <span x-text="task.label" />
+        </li>
       </template>
     </ul>
   </div>

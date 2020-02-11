@@ -32,9 +32,19 @@ class Task {
     this.el = elementHandle;
   }
 
+  get checkbox() {
+    return new Node(this.el.$('input[type="checkbox"]'));
+  }
+
   get label() {
     return (async () =>
       (await this.el).evaluate(el => el.textContent.trim())
+    )();
+  }
+
+  get className() {
+    return (async () =>
+      (await this.el).evaluate(el => el.getAttribute('class'))
     )();
   }
 }
@@ -86,6 +96,33 @@ describe('Add task', () => {
     openBrowser(async (p) => {
       await p.addTaskButton.click();
       expect((await p.tasks).length).toBe(0);
+    })
+  ));
+});
+
+describe('Complete task', () => {
+  const addTask = async (p) => {
+    await p.newTaskLabelInput.fill('buy tomatoes');
+    await p.addTaskButton.click();
+  };
+
+  // Without delay expectations fail.
+  const delay = () => new Promise(r => setTimeout(r, 0));
+
+  test('Complete and uncomplete task', async () => (
+    openBrowser(async (p) => {
+      await addTask(p);
+      const task = (await p.tasks)[0];
+
+      // complete
+      await task.checkbox.click();
+      await delay();
+      expect(await task.className).toBe('task completed');
+
+      // uncomplete
+      await task.checkbox.click();
+      await delay();
+      expect(await task.className).toBe('task');
     })
   ));
 });
