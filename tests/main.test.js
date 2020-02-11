@@ -53,13 +53,22 @@ class Node {
   }
 }
 
-test('Add task', async () => {
-  return openBrowser(async (p) => {
-    await p.newTaskLabelInput.fill('buy tomatoes');
-    await p.addTaskButton.click();
-    expect(await p.tasks).toEqual(['buy tomatoes']);
+describe('Add task', () => {
+  test('Add task', async () => (
+    openBrowser(async (p) => {
+      await p.newTaskLabelInput.fill('buy tomatoes');
+      await p.addTaskButton.click();
+      expect(await p.tasks).toEqual(['buy tomatoes']);
 
-    // input should be cleared.
-    expect(await p.newTaskLabelInput.value).toEqual('');
-  });
+      // input should be cleared.
+      expect(await p.newTaskLabelInput.value).toEqual('');
+    })
+  ));
+
+  test('Skip if label is empty', async () => (
+    openBrowser(async (p) => {
+      await p.addTaskButton.click();
+      expect((await p.tasks).length).toBe(0);
+    })
+  ));
 });
