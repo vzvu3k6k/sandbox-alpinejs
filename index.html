@@ -10,14 +10,14 @@
   <script src="main.js"></script>
 
   <div x-data="{ tasks: [], newTaskLabel: '' }">
-    <form x-on:submit.prevent="tasks = addTask(newTaskLabel, tasks)">
-      <input type="text" x-model="newTaskLabel">
+    <form x-on:submit.prevent="tasks = addTask(newTaskLabel, tasks); newTaskLabel = ''">
+      <input aria-label="New task label" type="text" x-model="newTaskLabel">
       <button type="submit">Add</button>
     </form>
 
     <ul>
       <template x-for="task in tasks" :key="task">
-        <li x-text="task.label" />
+        <li class="task" x-text="task.label" />
       </template>
     </ul>
   </div>

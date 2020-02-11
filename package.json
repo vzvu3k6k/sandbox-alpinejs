@@ -5,12 +5,13 @@
   "main": "index.js",
   "scripts": {
     "start": "parcel serve index.html",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "vzvu3k6k <vzvu3k6k@gmail.com>",
   "license": "CC0-1.0",
   "private": true,
   "devDependencies": {
+    "jest": "^25.1.0",
     "parcel": "^1.12.4",
     "playwright": "^0.10.0"
   },
