@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Todo Extra</title>
+</head>
+
+<body>
+  <script src="main.js"></script>
+
+  <div x-data="{ tasks: [], newTaskLabel: '' }">
+    <form x-on:submit.prevent="tasks = addTask(newTaskLabel, tasks)">
+      <input type="text" x-model="newTaskLabel">
+      <button type="submit">Add</button>
+    </form>
+
+    <ul>
+      <template x-for="task in tasks" :key="task">
+        <li x-text="task.label" />
+      </template>
+    </ul>
+  </div>
+</body>
+
+</html>
