@@ -23,7 +23,19 @@ class TodoPage {
   }
 
   get tasks() {
-    return this.page.$$eval('.task', nodes => nodes.map(n => n.textContent));
+    return (async () => (await this.page.$$('.task')).map(el => new Task(el)))();
+  }
+}
+
+class Task {
+  constructor(elementHandle) {
+    this.el = elementHandle;
+  }
+
+  get label() {
+    return (async () =>
+      (await this.el).evaluate(el => el.textContent.trim())
+    )();
   }
 }
 
@@ -58,7 +70,12 @@ describe('Add task', () => {
     openBrowser(async (p) => {
       await p.newTaskLabelInput.fill('buy tomatoes');
       await p.addTaskButton.click();
-      expect(await p.tasks).toEqual(['buy tomatoes']);
+
+      const taskLabels = [];
+      for (const task of await p.tasks) {
+        taskLabels.push(await task.label);
+      }
+      expect(taskLabels).toEqual(['buy tomatoes']);
 
       // input should be cleared.
       expect(await p.newTaskLabelInput.value).toEqual('');
