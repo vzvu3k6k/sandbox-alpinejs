@@ -15,11 +15,11 @@ class TodoPage {
   }
 
   get newTaskLabelInput() {
-    return this.page.$('[aria-label="New task label"]');
+    return new Node(this.page.$('[aria-label="New task label"]'));
   }
 
   get addTaskButton() {
-    return this.page.$('button[type="submit"]');
+    return new Node(this.page.$('button[type="submit"]'));
   }
 
   get tasks() {
@@ -27,15 +27,39 @@ class TodoPage {
   }
 }
 
+class Node {
+  constructor(elementHandle) {
+    this.el = elementHandle;
+  }
+
+  async fill(value) {
+    return (await this.el).fill(value);
+  }
+
+  async click() {
+    return (await this.el).click();
+  }
+
+  get text() {
+    return (async () =>
+      (await this.el).evaluate(el => el.textContent)
+    )();
+  }
+
+  get value() {
+    return (async () =>
+      (await this.el).evaluate(el => el.value)
+    )();
+  }
+}
+
 test('Add task', async () => {
   return openBrowser(async (p) => {
-    await (await p.newTaskLabelInput).fill('buy tomatoes');
-    await (await p.addTaskButton).click();
+    await p.newTaskLabelInput.fill('buy tomatoes');
+    await p.addTaskButton.click();
     expect(await p.tasks).toEqual(['buy tomatoes']);
 
-    // input is cleared.
-    expect(
-      await(await p.newTaskLabelInput).evaluate(n => n.value)
-    ).toEqual('');
+    // input should be cleared.
+    expect(await p.newTaskLabelInput.value).toEqual('');
   });
 });
