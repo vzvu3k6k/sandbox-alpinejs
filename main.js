@@ -1,10 +1,21 @@
 import 'alpinejs';
 
-window.addTask = (label, tasks) => (
-  label ? [...tasks, { label, id: Date.now() }] : tasks
-);
+class App {
+  constructor() {
+    this.tasks = [];
+    this.newTaskLabel = '';
+  }
 
+  addTask(label) {
+    if (label) {
+      this.tasks = [...this.tasks, { label, id: Date.now() }];
+      this.newTaskLabel = '';
+    }
+  }
 
-window.updateTask = (task, tasks) => (
-  tasks.map(t => t.id !== task.id ? t : { ...t, ...task })
-);
+  updateTask(task) {
+    this.tasks = this.tasks.map(t => t.id !== task.id ? t : { ...t, ...task });
+  }
+}
+
+window.App = App;

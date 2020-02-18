@@ -14,8 +14,8 @@
 <body>
   <script src="main.js"></script>
 
-  <div x-data="{ tasks: [], newTaskLabel: '' }">
-    <form x-on:submit.prevent="tasks = addTask(newTaskLabel, tasks); newTaskLabel = ''">
+  <div x-data="new App()">
+    <form x-on:submit.prevent="addTask(newTaskLabel)">
       <input aria-label="New task label" type="text" x-model="newTaskLabel">
       <button type="submit">Add</button>
     </form>
@@ -23,7 +23,7 @@
     <ul>
       <template x-for="task in tasks" :key="task">
         <li class="task" :class="{ completed: task.completed }">
-          <input type="checkbox" x-on:click="tasks = updateTask({ id: task.id, completed: !task.completed }, tasks)">
+          <input type="checkbox" x-on:click="updateTask({ id: task.id, completed: !task.completed })">
           <span x-text="task.label" />
         </li>
       </template>
