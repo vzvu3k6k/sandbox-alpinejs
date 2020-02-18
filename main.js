@@ -2,7 +2,7 @@ import 'alpinejs';
 
 class App {
   constructor() {
-    this.tasks = [];
+    this.tasks = [{ label: 'Buy tomatoes', id: 0 }];
     this.newTaskLabel = '';
   }
 
